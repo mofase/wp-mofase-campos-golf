@@ -1,4 +1,8 @@
 <?php
+/**
+ * Plugin Name: Mofase Campos Golf
+ * Description: Plugin to manage golf course information and integrate with Astra Theme.
+ * Version: 1.0
 /*
 Plugin Name: Mofase Campos Golf
 Description: Plugin to manage golf course information and integrate with Astra Theme.
