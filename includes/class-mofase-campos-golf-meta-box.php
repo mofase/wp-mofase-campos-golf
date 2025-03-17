@@ -10,68 +10,54 @@ class Mofase_Campos_Golf_Box {
     }
 
     public function render_meta_box($post) {
-        // Render meta box fields
-        ?>
-        <label for="golf_course_summary">Resumen:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_summary', true), 'golf_course_summary'); ?>
-
-        <label for="golf_course_description">Descripción:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_description', true), 'golf_course_description'); ?>
-
-        <label for="golf_course_details">Detalles del Campo:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_details', true), 'golf_course_details'); ?>
-
-        <label for="golf_course_hole_by_hole">Descripción Hoyo a Hoyo:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_hole_by_hole', true), 'golf_course_hole_by_hole'); ?>
-
-        <label for="golf_course_services">Servicios y Comodidades:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_services', true), 'golf_course_services'); ?>
-
-        <label for="golf_course_contact">Datos de Contacto:</label>
-        <?php wp_editor(get_post_meta($post->ID, 'golf_course_contact', true), 'golf_course_contact'); ?>
-
-        <label for="golf_course_gps">Ubicación GPS:</label>
-        <input type="text" id="golf_course_gps" name="golf_course_gps" value="<?php echo esc_attr(get_post_meta($post->ID, 'golf_course_gps', true)); ?>" />
-
-        <label for="golf_course_autonomia">Autonomía:</label>
-        <?php
-        $autonomia = get_post_meta($post->ID, 'golf_course_autonomia', true);
-        wp_dropdown_categories(array(
-            'taxonomy' => 'autonomia',
-            'name' => 'golf_course_autonomia',
-            'selected' => $autonomia,
-        ));
-        ?>
-
-        <label for="golf_course_provincia">Provincia:</label>
-        <?php
-        $provincia = get_post_meta($post->ID, 'golf_course_provincia', true);
-        wp_dropdown_categories(array(
-            'taxonomy' => 'provincia',
-            'name' => 'golf_course_provincia',
-            'selected' => $provincia,
-        ));
-        ?>
-
-        <label for="golf_course_gallery">Galería de Imágenes:</label>
-        <input type="text" id="golf_course_gallery" name="golf_course_gallery" value="<?php echo esc_attr(get_post_meta($post->ID, 'golf_course_gallery', true)); ?>" />
-        <button type="button" class="button" id="upload_gallery_button">Subir Imágenes</button>
-
-        <label for="golf_course_featured_image">Imagen Destacada:</label>
-        <?php
-        $image_id = get_post_meta($post->ID, 'golf_course_featured_image', true);
-        echo wp_get_attachment_image($image_id, 'thumbnail');
-        ?>
-        <button type="button" class="button" id="upload_featured_image_button">Subir Imagen</button>
-
-        <label for="golf_course_ranking">Ranking del Campo:</label>
-        <div id="golf_course_ranking"></div>
-
-        <label for="golf_course_generated_text_ai">Generado por IA:</label>
-        <input type="checkbox" id="golf_course_generated_text_ai" name="golf_course_generated_text_ai" value="1" <?php checked(get_post_meta($post->ID, 'golf_course_generated_text_ai', true), '1'); ?> />
-        <?php
-    }
-
+	    wp_nonce_field('save_golf_course_details', 'golf_course_details_nonce');
+	    $fields = [
+	        'golf_course_summary' => 'wysiwyg',
+	        'golf_course_description' => 'wysiwyg',
+	        'golf_course_details' => 'wysiwyg',
+	        'golf_course_hole_by_hole' => 'wysiwyg',
+	        'golf_course_services' => 'wysiwyg',
+	        'golf_course_contact' => 'wysiwyg',
+	        'golf_course_gps' => 'text',
+	        'golf_course_autonomia' => 'dropdown',
+	        'golf_course_provincia' => 'dropdown',
+	        'golf_course_gallery' => 'gallery',
+	        'golf_course_featured_image' => 'image'
+	    ];
+	
+	    foreach ($fields as $field => $type) {
+	        $value = get_post_meta($post->ID, $field, true);
+	        echo '<label for="'.$field.'">'.ucwords(str_replace('_', ' ', $field)).'</label>';
+	        if ($type === 'wysiwyg') {
+	            wp_editor($value, $field, array('textarea_name' => $field));
+	        } elseif ($type === 'text') {
+	            echo '<input type="text" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/><br/>';
+	        } elseif ($type === 'dropdown') {
+	            if ($field === 'golf_course_autonomia') {
+	                wp_dropdown_categories(array(
+	                    'taxonomy' => 'autonomia',
+	                    'name' => $field,
+	                    'selected' => $value,
+	                ));
+	            } elseif ($field === 'golf_course_provincia') {
+	                wp_dropdown_categories(array(
+	                    'taxonomy' => 'provincia',
+	                    'name' => $field,
+	                    'selected' => $value,
+	                ));
+	            }
+	        } elseif ($type === 'gallery') {
+	            echo '<input type="button" id="'.$field.'_button" class="button" value="Añadir galería de imágenes"/><br/>';
+	            echo '<input type="hidden" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/>';
+	            echo '<div id="'.$field.'_preview"></div>';
+	        } elseif ($type === 'image') {
+	            $image_id = get_post_meta($post->ID, $field, true);
+	            echo wp_get_attachment_image($image_id, 'thumbnail');
+	            echo '<button type="button" class="button" id="upload_'.$field.'_button">Subir Imagen</button>';
+	        }
+	    }
+	}
+	
     public function save_meta_boxes($post_id) {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
