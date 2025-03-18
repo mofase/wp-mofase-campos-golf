@@ -10,53 +10,54 @@ class Mofase_Campos_Golf_Box {
     }
 
     public function render_meta_box($post) {
-	    wp_nonce_field('save_golf_course_details', 'golf_course_details_nonce');
-	    $fields = [
-	        'golf_course_summary' => 'wysiwyg',
-	        'golf_course_description' => 'wysiwyg',
-	        'golf_course_details' => 'wysiwyg',
-	        'golf_course_hole_by_hole' => 'wysiwyg',
-	        'golf_course_services' => 'wysiwyg',
-	        'golf_course_contact' => 'wysiwyg',
-	        'golf_course_gps' => 'text',
-	        'golf_course_autonomia' => 'dropdown',
-	        'golf_course_provincia' => 'dropdown',
-	        'golf_course_gallery' => 'gallery',
-	        'golf_course_featured_image' => 'image'
-	    ];
-	
-	    foreach ($fields as $field => $type) {
-	        $value = get_post_meta($post->ID, $field, true);
-	        echo '<label for="'.$field.'">'.ucwords(str_replace('_', ' ', $field)).'</label>';
-	        if ($type === 'wysiwyg') {
-	            wp_editor($value, $field, array('textarea_name' => $field));
-	        } elseif ($type === 'text') {
-	            echo '<input type="text" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/><br/>';
-	        } elseif ($type === 'dropdown') {
-	            if ($field === 'golf_course_autonomia') {
-	                wp_dropdown_categories(array(
-	                    'taxonomy' => 'autonomia',
-	                    'name' => $field,
-	                    'selected' => $value,
-	                ));
-	            } elseif ($field === 'golf_course_provincia') {
-	                wp_dropdown_categories(array(
-	                    'taxonomy' => 'provincia',
-	                    'name' => $field,
-	                    'selected' => $value,
-	                ));
-	            }
-	        } elseif ($type === 'gallery') {
-	            echo '<input type="button" id="'.$field.'_button" class="button" value="Añadir galería de imágenes"/><br/>';
-	            echo '<input type="hidden" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/>';
-	            echo '<div id="'.$field.'_preview"></div>';
-	        } elseif ($type === 'image') {
-	            $image_id = get_post_meta($post->ID, $field, true);
-	            echo wp_get_attachment_image($image_id, 'thumbnail');
-	            echo '<button type="button" class="button" id="upload_'.$field.'_button">Subir Imagen</button>';
-	        }
-	    }
-	}
+        wp_nonce_field('save_golf_course_details', 'golf_course_details_nonce');
+        $fields = [
+            'resumen' => 'wysiwyg',
+            'descripcion' => 'wysiwyg',
+            'detalles_del_campo' => 'wysiwyg',
+            'descripcion_hoyo_a_hoyo' => 'wysiwyg',
+            'servicios_y_comodidades' => 'wysiwyg',
+            'datos_de_contacto' => 'wysiwyg',
+            'ubicacion_gps' => 'text',
+            'autonomia' => 'dropdown',
+            'provincia' => 'dropdown',
+            'galeria_de_imagenes' => 'gallery',
+            'imagen_destacada' => 'image'
+        ];
+    
+        foreach ($fields as $field => $type) {
+            $value = get_post_meta($post->ID, $field, true);
+            echo '<label for="'.$field.'">'.ucwords(str_replace('_', ' ', $field)).'</label>';
+            if ($type === 'wysiwyg') {
+               // wp_editor($value, $field, array('textarea_name' => $field));
+                wp_editor($value, $field);
+            } elseif ($type === 'text') {
+                echo '<input type="text" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/><br/>';
+            } elseif ($type === 'dropdown') {
+                if ($field === 'autonomia') {
+                    wp_dropdown_categories(array(
+                        'taxonomy' => 'autonomia',
+                        'name' => $field,
+                        'selected' => $value,
+                    ));
+                } elseif ($field === 'provincia') {
+                    wp_dropdown_categories(array(
+                        'taxonomy' => 'provincia',
+                        'name' => $field,
+                        'selected' => $value,
+                    ));
+                }
+            } elseif ($type === 'gallery') {
+                echo '<input type="button" id="'.$field.'_button" class="button" value="Añadir galería de imágenes"/><br/>';
+                echo '<input type="hidden" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/>';
+                echo '<div id="'.$field.'_preview"></div>';
+            } elseif ($type === 'image') {
+                $image_id = get_post_meta($post->ID, $field, true);
+                echo wp_get_attachment_image($image_id, 'thumbnail');
+                echo '<button type="button" class="button" id="upload_'.$field.'_button">Subir Imagen</button>';
+            }
+        }
+    }
 	
     public function save_meta_boxes($post_id) {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
