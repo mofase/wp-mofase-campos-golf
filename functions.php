@@ -1,10 +1,10 @@
 <?php
-// Asegurarse de que el template se utilice para el tipo de post personalizado 'campo_golf'
+// Asegurarse de que el template se utilice para el tipo de post personalizado 'golf_course'
 function load_custom_templates($template) {
     global $post;
 
-    if ($post->post_type == 'campo_golf' && $template !== locate_template(array("single-campo_golf.php"))) {
-        return plugin_dir_path(__FILE__) . 'templates/single-campo_golf.php';
+    if ($post->post_type == 'golf_course' && $template !== locate_template(array("single-golf_course.php"))) {
+        return plugin_dir_path(__FILE__) . 'templates/single-golf_course.php';
     }
 
     return $template;

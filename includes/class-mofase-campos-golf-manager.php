@@ -15,10 +15,10 @@ class Mofase_Campos_Golf_Manager {
             'public' => true,
             'has_archive' => true,
             'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
-            'rewrite' => array('slug' => 'campos_de_golf'),
+            'rewrite' => array('slug' => 'golf-courses'),
         );
 
-        register_post_type('campo_de_golf', $args);
+        register_post_type('golf_course', $args);
     }
 }
 ?>
