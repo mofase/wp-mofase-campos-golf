@@ -35,7 +35,7 @@ while (have_posts()) : the_post(); ?>
                     <?php endfor; ?>
                 </div>
             </p>
-            <p>Imagen: <?php  echo get_post_meta(get_the_ID(),'_thumbnail_id', true); ?></p>
+            <p>Imagen: <?php echo get_post_meta(get_the_ID(), '_thumbnail_id', true); ?></p>
         </div>
     </div>
     <script>

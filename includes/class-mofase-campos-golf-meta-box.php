@@ -24,12 +24,11 @@ class Mofase_Campos_Golf_Box {
             'galeria_de_imagenes' => 'gallery',
             'imagen_destacada' => 'image'
         ];
-    
+
         foreach ($fields as $field => $type) {
             $value = get_post_meta($post->ID, $field, true);
             echo '<label for="'.$field.'">'.ucwords(str_replace('_', ' ', $field)).'</label>';
             if ($type === 'wysiwyg') {
-               // wp_editor($value, $field, array('textarea_name' => $field));
                 wp_editor($value, $field);
             } elseif ($type === 'text') {
                 echo '<input type="text" id="'.$field.'" name="'.$field.'" value="'.esc_attr($value).'"/><br/>';
@@ -58,7 +57,7 @@ class Mofase_Campos_Golf_Box {
             }
         }
     }
-	
+
     public function save_meta_boxes($post_id) {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
