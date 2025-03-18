@@ -6,7 +6,7 @@ class Mofase_Campos_Golf_Importer {
     }
 
     public function add_import_export_pages() {
-        add_submenu_page('edit.php?post_type=campo_de_golf', 'Importar Campos de Golf', 'Importar', 'manage_options', 'import_golf_courses', array($this, 'render_import_page'));
+        add_submenu_page('edit.php?post_type=golf_course', 'Importar Campos de Golf', 'Importar', 'manage_options', 'import_golf_courses', array($this, 'render_import_page'));
     }
 
     public function render_import_page() {

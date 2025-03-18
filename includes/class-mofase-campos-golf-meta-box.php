@@ -6,7 +6,7 @@ class Mofase_Campos_Golf_Box {
     }
 
     public function add_meta_boxes() {
-        add_meta_box('golf_course_details', 'Detalles del Campo de Golf', array($this, 'render_meta_box'), 'campo_de_golf', 'normal', 'high');
+        add_meta_box('golf_course_details', 'Detalles del Campo de Golf', array($this, 'render_meta_box'), 'golf_course', 'normal', 'high');
     }
 
     public function render_meta_box($post) {

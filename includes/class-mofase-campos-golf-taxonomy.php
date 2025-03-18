@@ -18,7 +18,7 @@ class Mofase_Campos_Golf_Taxonomy {
             'rewrite' => array('slug' => 'autonomias'),
         );
 
-        register_taxonomy('autonomia', 'campo_de_golf', $args);
+        register_taxonomy('autonomia', 'golf_course', $args);
 
         // Register Provincias taxonomy
         $labels = array(
@@ -33,7 +33,7 @@ class Mofase_Campos_Golf_Taxonomy {
             'rewrite' => array('slug' => 'provincias'),
         );
 
-        register_taxonomy('provincia', 'campo_de_golf', $args);
+        register_taxonomy('provincia', 'golf_course', $args);
     }
 }
 ?>
